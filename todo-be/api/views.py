@@ -5,7 +5,17 @@ from .serializers import TodoSerializer
 
 
 @api_view(['GET'])
-def getTodoList(request):
+def api_overview(request):
+    api_urls = {
+        'List': '/todos/',
+        'Create': '/create/',
+    }
+
+    return Response(api_urls)
+
+
+@api_view(['GET'])
+def get_todo_list(request):
     todos = Todo.objects.all()
     serializer = TodoSerializer(todos, many=True)
 
@@ -13,9 +23,18 @@ def getTodoList(request):
 
 
 @api_view(['POST'])
-def createTodo(request):
+def create_todo(request):
     serializer = TodoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
 
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_todo_by_id(request):
+    print(request.data)
+    # todo = Todo.objects.get(id=pk)
+    # serializer = TodoSerializer(todo, many=False)
+
+    return Response(request.data)
